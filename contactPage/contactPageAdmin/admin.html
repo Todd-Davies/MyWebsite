@@ -1,0 +1,36 @@
+<html>
+
+<head>
+	<script type="text/javascript" src="encrypt.js"></script>
+	<script>
+
+		//var question = "";
+		//var input = "0XX-10X-23X-16X-64X-86X-71X-52X-19X-8XX-18X-29X-24X-75X-16X-27X-25X";//abcdefghijklmnopqrstuvwxyz
+
+		function updateUI() {
+			enc();
+			dec();
+		}
+
+		function enc() {
+			document.getElementById('cipher').innerHTML = xor(true, document.getElementById('answer').value, document.getElementById('question').value);
+		}
+
+		function dec() {
+			document.getElementById('decrypted').innerHTML = xor(false, document.getElementById('pass').value, document.getElementById('cipher').innerHTML);
+		}
+
+	</script>
+</head>
+
+<body>
+
+Text to encrypt: <input type="text" id="question" placeholder="JohnSmith@example.com" onkeyup="updateUI()"></input></br>
+Answer to question: <input type="text" id="answer" placeholder="Pencil" onkeyup="updateUI()"></input></br>
+Ciphertext: <p id="cipher"></p></br></br>
+
+Password (to decrypt):<input type="text" id="pass" placeholder="Pencil" onkeyup="updateUI()"></input></br>
+Decrypted: <p id="decrypted"></p></br></br>
+</body>
+
+</html>
