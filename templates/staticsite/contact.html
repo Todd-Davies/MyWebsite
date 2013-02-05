@@ -1,0 +1,17 @@
+<html>
+
+<head>
+</head>
+
+<body>
+
+<form action="/contact/submit/" method="post">
+{% csrf_token %}
+    <input type="text" name="msgHeader" id="msgHeader" placeholder="Title" /><br />
+    <textarea name="msgBody" id="msgBody" placeholder="Message text"></textarea><br />
+<input type="submit" value="Send" />
+</form>
+
+</body>
+
+</html>

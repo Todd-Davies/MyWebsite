@@ -1,0 +1,27 @@
+<html>
+<head>
+	<script type="text/javascript" src="/static/contactPage/js/encrypt.js"></script>
+	<script>
+	    {% if question %}
+		var cipherText = "{{ question.encryptedAnswer }}";
+
+		function updateUI() {
+			dec();
+		}
+
+		function dec() {
+			document.getElementById('cipher').innerHTML = xor(false, document.getElementById('answer').value, cipherText);
+		}
+            {% else %}
+                
+            {% endif %}
+	</script>
+</head>
+
+<body>
+
+	So bots don't harvest my email address, answer this question to reveal it:</br></br>
+	{{ question.question }}</br>
+	<input type="text" id="answer" placeholder="{{ question.hint }}" onkeyup="updateUI()" style="width:300px;"></input></br>
+	<p id="cipher"></p></br></br>
+</body>
