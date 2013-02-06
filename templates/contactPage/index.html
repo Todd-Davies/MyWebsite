@@ -1,27 +1,88 @@
 <html>
 <head>
+	<title>Todd Davies | Contact</title>
+	<link rel="stylesheet" type="text/css" href="/static/contactPage/css/reset.css">
+	<link rel="stylesheet" type="text/css" href="/static/contactPage/css/structure.css">
 	<script type="text/javascript" src="/static/contactPage/js/encrypt.js"></script>
 	<script>
 	    {% if question %}
-		var cipherText = "{{ question.encryptedAnswer }}";
+		var cipherText = "{{ encryptedAnswer }}";
 
 		function updateUI() {
 			dec();
+			if(validateForm()) {
+				document.getElementById('answer').style.background = 'url(/static/contactPage/img/tick.png) no-repeat scroll 258px 8px';
+			} else {
+				document.getElementById('answer').style.background = '';				
+			}
+		}
+
+		function validateForm() {
+			var x=document.getElementById('output').innerHTML;
+			var atpos=x.indexOf("@");
+			var dotpos=x.lastIndexOf(".");
+			if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length) {
+				return false;
+			} else {
+				return true;
+			}
 		}
 
 		function dec() {
-			document.getElementById('cipher').innerHTML = xor(false, document.getElementById('answer').value, cipherText);
+			if(document.getElementById('answer').value=="") {
+				document.getElementById('output').innerHTML = "Answer the question to reveal my email";
+				document.getElementById('output').href = "";
+			} else {
+				document.getElementById('output').innerHTML = xor(false, document.getElementById('answer').value, cipherText);
+				document.getElementById('output').href = "mailto:" + xor(false, document.getElementById('answer').value, cipherText);
+			}
 		}
             {% else %}
                 
             {% endif %}
 	</script>
+	<script>
+	function overlay(){
+		el = document.getElementById("overlay");
+		el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
+	}
+	function close() {
+	     document.getElementById("overlay").style.visibility = 'hidden';
+	}
+	</script>
 </head>
 
 <body>
+<form class="box login" onsubmit="return false;">
+	<header>
+	  <div class="toolbar">
+		  <a href="./" class="toolbar-right"><img src="/static/contactPage/img/reload.png"/></a>
+		  <span>Contact me</span>
+		  <a href="#" class="toolbar-left" onclick="overlay();"><img src="/static/contactPage/img/help.png"/></a>
+	  </div>
+	</header>
+	<fieldset class="boxBody">
+	  <label>{{ question.question }}</label></br>
+	  <input type="text" id="answer" tabindex="1" autocomplete="off" placeholder="{{ question.hint}}" onkeyup="updateUI();">
+	</fieldset>
+	<footer>
+	  <a id="output" href=""></a>
+	</footer>
+</form>
 
-	So bots don't harvest my email address, answer this question to reveal it:</br></br>
-	{{ question.question }}</br>
-	<input type="text" id="answer" placeholder="{{ question.hint }}" onkeyup="updateUI()" style="width:300px;"></input></br>
-	<p id="cipher"></p></br></br>
+<div id="overlay">
+<div>
+<p>Email addresses are wonderful things. They're so wonderful that spam bots collect them.</br></br>
+To avoid having my email address harvested, I ask that you prove that you're a human before I give you my email address. Thanks!</p>
+<a href="javascript:close()">Close</a>
+</div>
+
 </body>
+
+<footer>
+<script>
+	dec();
+	document.getElementById('answer').focus();
+</script>
+</footer>
+</html>
